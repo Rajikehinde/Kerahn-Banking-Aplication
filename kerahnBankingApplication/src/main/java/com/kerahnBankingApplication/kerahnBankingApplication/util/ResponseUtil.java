@@ -18,7 +18,9 @@ public class ResponseUtil {
     public static final String SUCCESSFUL_TRANSFER_MESSAGE = "Transfer Successful";
     public static final String USER_BALANCE_INSUFFICIENT = "005";
     public static final String USER_BALANCE_INSUFFICIENT_MESSAGE = "Balance insufficient";
-    public static final String DELETED_SUCCESSFULLY_CODE = "006";
+    public static final String SIGN_UP_CODE = "006";
+    public static final String SIGN_UP_MESSAGE = "Sign up";
+    public static final String DELETED_SUCCESSFULLY_CODE = "007";
     public static final String DELETED_SUCCESSFULLY_MESSAGE = "Account deleted successfully";
 
 
@@ -26,7 +28,7 @@ public class ResponseUtil {
 
     public static final int LENGTH_OF_ACCOUNT_NUMBER = 10;
 
-    public  static String generateAccountNumber(int len){
+    public  static String generateAccountNumber(){
     Year currentYear = Year.now();
 
     int max =  999999;

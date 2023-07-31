@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 @Builder
 @Setter
@@ -36,9 +37,17 @@ public class Customer {
     private LocalDate dateOfBirth;
     private String city;
     private String status;
+    private String password;
     private Boolean deleteStatus;
+    private String userName;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+//added roles due to database security
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinTable(name = "customer_role", joinColumns = @JoinColumn(name = "customer_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id"))
+    private Set<Roles> roles;
 }

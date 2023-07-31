@@ -4,6 +4,7 @@ import com.kerahnBankingApplication.kerahnBankingApplication.dto.*;
 import com.kerahnBankingApplication.kerahnBankingApplication.entity.Transaction;
 import com.kerahnBankingApplication.kerahnBankingApplication.service.CustomerService;
 import com.kerahnBankingApplication.kerahnBankingApplication.service.TransactionService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,15 +22,20 @@ public class CustomerController {
     }
 
 
-    @PostMapping("register")
+    @PostMapping("/customer/registration")
     public Response registerCustomer(@RequestBody CustomerRequest customerRequest){
         return customerService.registerCustomer(customerRequest);
     }
-    @GetMapping("/users")
+    @PostMapping("/admin/registration")
+    public Response registerAdmin(@RequestBody CustomerRequest customerRequest){
+        return customerService.registerAdmin(customerRequest);
+    }
+    @GetMapping("/all/customers")
+//    @PreAuthorize("ADMIN")
     List<Response> listAllCustomers (){
         return customerService.listAllCustomers();
     }
-    @GetMapping("/{userFetching}")
+    @GetMapping("/userFetching/{userFetching}")
     Response fetchCustomer (@PathVariable("userFetching") Long customerId){
         return customerService.fetchCustomer(customerId);
     }
@@ -45,7 +51,8 @@ public class CustomerController {
     Response updateCustomerProfile (@RequestBody CustomerRequest customerRequest){
         return customerService.updateCustomerProfile(customerRequest);
     }
-    @DeleteMapping("/{deleteUser}")
+    @DeleteMapping("/delete/{deleteUser}")
+    //@PreAuthorize("ADMIN")
     Response deleteCustomer (@PathVariable("deleteUser") Long customerId){
         return customerService.deleteCustomer(customerId);
     }

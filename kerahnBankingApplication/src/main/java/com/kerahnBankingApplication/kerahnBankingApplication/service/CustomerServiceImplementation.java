@@ -4,17 +4,17 @@ import com.kerahnBankingApplication.kerahnBankingApplication.dto.*;
 import com.kerahnBankingApplication.kerahnBankingApplication.email.dto.EmailDetails;
 import com.kerahnBankingApplication.kerahnBankingApplication.email.service.EmailService;
 import com.kerahnBankingApplication.kerahnBankingApplication.entity.Customer;
-import com.kerahnBankingApplication.kerahnBankingApplication.entity.Transaction;
+import com.kerahnBankingApplication.kerahnBankingApplication.entity.RoleName;
+import com.kerahnBankingApplication.kerahnBankingApplication.entity.Roles;
 import com.kerahnBankingApplication.kerahnBankingApplication.repository.CustomerRepository;
-import com.kerahnBankingApplication.kerahnBankingApplication.repository.TransactionRepository;
 import com.kerahnBankingApplication.kerahnBankingApplication.util.ResponseUtil;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +26,8 @@ public class CustomerServiceImplementation implements CustomerService{
     private TransactionService transactionService;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public Response registerCustomer(CustomerRequest customerRequest) {
         //checking if customer already exists - if no create an account for customer
@@ -43,13 +45,18 @@ public class CustomerServiceImplementation implements CustomerService{
                     .lastName(customerRequest.getLastName())
                     .otherName(customerRequest.getOtherName())
                     .email(customerRequest.getEmail())
-                    .accountNumber(ResponseUtil.generateAccountNumber(28973667))
+                    .accountNumber(ResponseUtil.generateAccountNumber())
                     .accountBalance(BigDecimal.ZERO)
                     .city(customerRequest.getCity())
                     .nextOfKin(customerRequest.getNextOfKin())
                     .phoneNumber(customerRequest.getPhoneNumber())
                     .stateOfOrigin(customerRequest.getStateOfOrigin())
                     .dateOfBirth(customerRequest.getDateOfBirth())
+                    //added the password and roles because of security
+                    .password(passwordEncoder.encode(customerRequest.getPassword()))
+                    .roles(Collections.singleton(Roles.builder()
+                                    .roleName(RoleName.ROLE_USER)
+                            .build()))
                     .status("Active")
                     .build();
         //saving created account of customer to repository
@@ -74,6 +81,70 @@ public class CustomerServiceImplementation implements CustomerService{
                         .accountName(saveCustomerInfo.getFirstName() + " " + saveCustomerInfo.getLastName() + " " + saveCustomerInfo.getOtherName())
                         .build())
                 .build();
+    }
+
+    @Override
+    public Response registerAdmin(CustomerRequest customerRequest) {
+        Boolean isExists = customerRepository.existsByEmail(customerRequest.getEmail());
+        if (isExists){
+            return Response.builder()
+                    .responseCode(ResponseUtil.USER_EXISTS_CODE)
+                    .responseMessage(ResponseUtil.USER_EXISTS_MESSAGE)
+                    .data(null)
+                    .build();
+        }
+        //Creating new customer account
+        Customer admin = Customer.builder()
+                .firstName(customerRequest.getFirstName())
+                .lastName(customerRequest.getLastName())
+                .otherName(customerRequest.getOtherName())
+                .email(customerRequest.getEmail())
+                .accountNumber(ResponseUtil.generateAccountNumber())
+                .accountBalance(BigDecimal.ZERO)
+                .city(customerRequest.getCity())
+                .nextOfKin(customerRequest.getNextOfKin())
+                .phoneNumber(customerRequest.getPhoneNumber())
+                .stateOfOrigin(customerRequest.getStateOfOrigin())
+                .dateOfBirth(customerRequest.getDateOfBirth())
+                //added the password and roles because of security
+                .password(passwordEncoder.encode(customerRequest.getPassword()))
+                .roles(Collections.singleton(Roles.builder()
+                        .roleName(RoleName.ROLE_ADMIN)
+                        .build()))
+                .status("Active")
+                .build();
+        //saving created account of customer to repository
+        Customer saveAdminInfo = customerRepository.save(admin);
+
+        //appending email response to the account
+        EmailDetails emailDetails = EmailDetails.builder()
+                .recipient(saveAdminInfo.getEmail())
+                .subject("Account Creation")
+                .messageBody("CONGRATULATION! Your Account Has Been Successfully Created.\nYour Account Details: \n" +
+                        "Account Name: " + saveAdminInfo.getFirstName() + " " + saveAdminInfo.getLastName()+ " " + saveAdminInfo.getOtherName()+ "\n Account Number: " + saveAdminInfo.getAccountNumber() + "\n Account Balance" +saveAdminInfo.getAccountBalance())
+                .build();
+        emailService.sendSimpleEmail(emailDetails);
+
+        //giving a response on created account
+        return Response.builder()
+                .responseCode(ResponseUtil.SUCCESS)
+                .responseMessage(ResponseUtil.USER_REGISTERED_SUCCESS)
+                .data(Data.builder()
+                        .accountNumber(saveAdminInfo.getAccountNumber())
+                        .accountBalance(saveAdminInfo.getAccountBalance())
+                        .accountName(saveAdminInfo.getFirstName() + " " + saveAdminInfo.getLastName() + " " + saveAdminInfo.getOtherName())
+                        .build())
+                .build();
+    }
+
+    @Override
+    public Response customerLogin(CustomerRequest customerRequest) {
+        return null;
+    }
+
+    @Override
+    public Response adminLogin(CustomerRequest customerRequest) {
+        return null;
     }
 
     @Override

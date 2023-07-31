@@ -9,6 +9,10 @@ import java.util.List;
 
 public interface CustomerService {
     Response registerCustomer (CustomerRequest customerRequest);
+    Response registerAdmin (CustomerRequest customerRequest);
+    Response customerLogin (CustomerRequest customerRequest);
+    Response adminLogin (CustomerRequest customerRequest);
+
     List<Response> listAllCustomers ();
     Response fetchCustomer (Long customerId);
     Response balanceEnquiry(String accountNumber);

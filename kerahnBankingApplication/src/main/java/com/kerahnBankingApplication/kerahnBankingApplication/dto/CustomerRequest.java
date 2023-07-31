@@ -23,4 +23,6 @@ public class CustomerRequest {
     private String nextOfKin;
     private String stateOfOrigin;
     private String city;
+    private String password;
+    private String userName;
 }
