@@ -1,17 +1,12 @@
 package com.kerahnBankingApplication.kerahnBankingApplication.service;
 
-import com.kerahnBankingApplication.kerahnBankingApplication.dto.CreditDebitRequest;
-import com.kerahnBankingApplication.kerahnBankingApplication.dto.CustomerRequest;
-import com.kerahnBankingApplication.kerahnBankingApplication.dto.Response;
-import com.kerahnBankingApplication.kerahnBankingApplication.dto.TransferRequest;
+import com.kerahnBankingApplication.kerahnBankingApplication.dto.*;
 
 import java.util.List;
 
 public interface CustomerService {
     Response registerCustomer (CustomerRequest customerRequest);
     Response registerAdmin (CustomerRequest customerRequest);
-    Response customerLogin (CustomerRequest customerRequest);
-    Response adminLogin (CustomerRequest customerRequest);
 
     List<Response> listAllCustomers ();
     Response fetchCustomer (Long customerId);

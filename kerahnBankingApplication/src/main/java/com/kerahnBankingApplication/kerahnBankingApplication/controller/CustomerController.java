@@ -1,10 +1,10 @@
 package com.kerahnBankingApplication.kerahnBankingApplication.controller;
 
 import com.kerahnBankingApplication.kerahnBankingApplication.dto.*;
-import com.kerahnBankingApplication.kerahnBankingApplication.entity.Transaction;
 import com.kerahnBankingApplication.kerahnBankingApplication.service.CustomerService;
 import com.kerahnBankingApplication.kerahnBankingApplication.service.TransactionService;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +30,7 @@ public class CustomerController {
     public Response registerAdmin(@RequestBody CustomerRequest customerRequest){
         return customerService.registerAdmin(customerRequest);
     }
+    //@PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/all/customers")
 //    @PreAuthorize("ADMIN")
     List<Response> listAllCustomers (){
@@ -47,7 +48,7 @@ public class CustomerController {
 //    Response nameEnquiry(@PathVariable("NameEnquiryCheck") String accountNumber){
 //        return customerService.nameEnquiry(accountNumber);
 //    }
-    @PutMapping("/update/user")
+    @PutMapping("/update/user/profile")
     Response updateCustomerProfile (@RequestBody CustomerRequest customerRequest){
         return customerService.updateCustomerProfile(customerRequest);
     }

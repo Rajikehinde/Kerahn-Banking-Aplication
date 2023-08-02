@@ -29,6 +29,7 @@ public class Customer {
     private String lastName;
     private String otherName;
     private String email;
+    private String username;
     private BigDecimal accountBalance;
     private String accountNumber;
     private String phoneNumber;
@@ -39,7 +40,6 @@ public class Customer {
     private String status;
     private String password;
     private Boolean deleteStatus;
-    private String userName;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp

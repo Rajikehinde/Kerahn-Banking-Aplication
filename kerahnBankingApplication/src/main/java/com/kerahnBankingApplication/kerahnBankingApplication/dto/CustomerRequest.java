@@ -19,6 +19,7 @@ public class CustomerRequest {
     private String email;
     private BigDecimal accountBalance;
     private LocalDate dateOfBirth;
+    private String username;
     private String phoneNumber;
     private String nextOfKin;
     private String stateOfOrigin;

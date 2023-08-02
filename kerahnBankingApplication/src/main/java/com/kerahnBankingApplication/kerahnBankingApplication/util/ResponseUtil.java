@@ -22,6 +22,9 @@ public class ResponseUtil {
     public static final String SIGN_UP_MESSAGE = "Sign up";
     public static final String DELETED_SUCCESSFULLY_CODE = "007";
     public static final String DELETED_SUCCESSFULLY_MESSAGE = "Account deleted successfully";
+    public static final String SUCCESSFUL_LOGIN_RESPONSE_CODE = "008";
+    public static final String SUCCESSFUL_LOGIN_MESSAGE = "Login successfully";
+
 
 
 
