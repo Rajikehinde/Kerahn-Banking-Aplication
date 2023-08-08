@@ -1,6 +1,8 @@
 package com.kerahnBankingApplication.kerahnBankingApplication.controller;
 
 import com.kerahnBankingApplication.kerahnBankingApplication.dto.*;
+import com.kerahnBankingApplication.kerahnBankingApplication.service.AuthResponse;
+import com.kerahnBankingApplication.kerahnBankingApplication.service.AuthServiceImpl;
 import com.kerahnBankingApplication.kerahnBankingApplication.service.CustomerService;
 import com.kerahnBankingApplication.kerahnBankingApplication.service.TransactionService;
 import org.springframework.http.HttpStatus;
@@ -20,7 +22,6 @@ public class CustomerController {
         this.transactionService = transactionService;
         this.customerService = customerService;
     }
-
 
     @PostMapping("/customer/registration")
     public Response registerCustomer(@RequestBody CustomerRequest customerRequest){

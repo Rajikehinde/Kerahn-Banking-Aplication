@@ -34,6 +34,8 @@ public class Customer {
     private String accountNumber;
     private String phoneNumber;
     private String nextOfKin;
+//    @Enumerated(EnumType.STRING)
+//    private Role roleName;
     private String stateOfOrigin;
     private LocalDate dateOfBirth;
     private String city;
