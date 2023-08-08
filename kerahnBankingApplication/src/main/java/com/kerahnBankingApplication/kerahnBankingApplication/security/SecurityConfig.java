@@ -55,13 +55,13 @@ public class SecurityConfig{
         return configuration.getAuthenticationManager();
     }
 
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(customUserDetailsService);
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
-    }
+//    @Bean
+//    public DaoAuthenticationProvider daoAuthenticationProvider() {
+//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+//        authenticationProvider.setUserDetailsService(customUserDetailsService);
+//        authenticationProvider.setPasswordEncoder(passwordEncoder());
+//        return authenticationProvider;
+//    }
 
 
 //Authorization code
@@ -78,14 +78,14 @@ public class SecurityConfig{
                             .requestMatchers(HttpMethod.POST,"/api/customer/registration").permitAll()
                             .requestMatchers(HttpMethod.POST,"/api/admin/registration").permitAll()
                             .requestMatchers(HttpMethod.POST,"/api/login").permitAll()
-                            .requestMatchers(HttpMethod.GET,"/api/userFetching").permitAll()
+//                            .requestMatchers(HttpMethod.GET,"/api/userFetching").hasAuthority()
                             .requestMatchers(HttpMethod.PUT,"/api/update/user/profile").permitAll()
-                            .requestMatchers("/api/all/customers").permitAll()
+//                            .requestMatchers("/api/all/customers").permitAll()
                             .requestMatchers("/api/delete").permitAll()
-                            .anyRequest().permitAll()
+                            .anyRequest().authenticated()
                     )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .authenticationProvider(daoAuthenticationProvider())
+//                .authenticationProvider(daoAuthenticationProvider())
                 .httpBasic(Customizer.withDefaults());
         return httpSecurity.build();
     }
